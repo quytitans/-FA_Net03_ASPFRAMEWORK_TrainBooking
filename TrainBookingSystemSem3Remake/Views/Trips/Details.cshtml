@@ -1,0 +1,119 @@
+﻿@model TrainBookingSystemSem3Remake.Models.Trip
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Trip</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Train.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Train.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TrainStationFrom.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TrainStationFrom.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TrainStationTo.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TrainStationTo.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDateTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndDateTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+    </dl>
+
+    <table class="table">
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Row
+            </th>
+            <th>
+                Colunm
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                BookingDate
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
+        </tr>
+
+        <h3>Danh sách vé</h3>
+
+        @foreach (var item in ViewBag.Tickets)
+        {
+            <tr>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.TrainCarriages.Id)*@
+                    @item.Id
+                </td>
+                <td>
+                    @item.Row
+                </td>
+                <td>
+                    @item.Colunm
+                </td>
+                <td>
+                    @item.Price
+                </td>
+
+                <td>
+                    @(item.BookingDate == "" ? item.BookingDate: "chưa đặt chỗ")
+                </td>
+                <td>
+                    @item.Status
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

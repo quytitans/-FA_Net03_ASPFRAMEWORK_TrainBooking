@@ -1,0 +1,133 @@
+﻿@*@model IEnumerable<TrainBookingSystemSem3Remake.Models.Trip>*@
+@model PagedList.IPagedList<TrainBookingSystemSem3Remake.Models.Trip>
+@using PagedList.Mvc;
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@using (Html.BeginForm("Index", "Trips", FormMethod.Get))
+{
+    <p>
+        @*Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)*@
+        <div class="container" style="margin-bottom:10px">
+            <div class="row">
+
+                <div class="col-lg-4">
+                    Chọn nơi đi
+                    <select class="form-control" name="fromStationId" id="fromStationId">
+                        <option value=-1>Chọn nơi đến</option>
+                        @foreach (var train in ViewBag.TrainStations)
+                        {
+                            <option value=@train.Id @(ViewBag.fromStationId == train.Id ? "selected" : "")>@train.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-lg-4">
+                    Chọn nơi đến
+                    <select class="form-control" name="toStationId" id="toStationId">
+                        <option value=-1>Chọn nơi đi</option>
+                        @foreach (var train in ViewBag.TrainStations)
+                        {
+                            <option value=@train.Id @(ViewBag.toStationId == train.Id ? "selected" : "")>@train.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-lg-4">
+                    Tìm theo trạng thái
+                    <select class="form-control" name="status" id="status">
+                        <option value=-2 @(ViewBag.status == -2 ? "selected" : "")>Chọn trạng thái</option>
+                        <option value=-1 @(ViewBag.status == -1 ? "selected" : "")>Hủy</option>
+                        <option value=1 @(ViewBag.status == 1 ? "selected" : "")>Tồn tại</option>
+                    </select>
+                </div>
+                <input type="submit" value="Search" style="display:none" />
+                <div class="col-lg-4" style="margin-top:10px">
+                    Tìm theo khoảng ngày bắt đầu
+                    <input type="date" class="form-control" id="startDate" name="startDate" value="@ViewBag.startDate">
+                </div>
+
+                <div class="col-lg-4" style="margin-top:10px">
+                    Tìm theo khoảng ngày kết thúc
+                    <input type="date" id="endDate" class="form-control" name="endDate" value="@ViewBag.endDate">
+                </div>
+                <div class="col-lg-4" style="margin-top:25px;">
+                    <input class="btn btn-success" type="submit" value="Search" />
+                </div>
+
+            </div>
+        </div>
+
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Train.Name)*@
+            Train Name
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.TrainStationFrom.Name)*@
+            TrainStationFrom Name
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.TrainStationTo.Name)*@
+            TrainStationTo Name
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.StartDateTime)*@
+            StartDateTime
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.EndDateTime)*@
+            EndDateTime
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Status)*@
+            Status
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Train.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrainStationFrom.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrainStationTo.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, fromStationId = ViewBag.fromStationId, toStationId = ViewBag.toStationId, status = ViewBag.status, startDate = ViewBag.startDate, endDate = ViewBag.endDate }))

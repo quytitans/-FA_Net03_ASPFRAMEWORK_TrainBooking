@@ -1,0 +1,59 @@
+﻿@*@model IEnumerable<TrainBookingSystemSem3.Models.Trip>*@
+@model PagedList.IPagedList<TrainBookingSystemSem3Remake.Models.Trip>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "ListTripsSelected";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+@section link
+{
+    <link rel="stylesheet" href="~/Content/assets_client/css/test.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+}
+<div id="info-train">
+    <div class="wide grid  ">
+        <div class="row info-tickets-train">
+            <span class="l-3"></span>
+            <div class="l-4">VÉ TÀU ĐANG HOT</div>
+            <span class="l-3"></span>
+        </div>
+        <div class="row container-info-train">
+            @{
+                foreach (var item in Model)
+                {
+                    <div class="col l-3 ">
+                        <!-- <img src="/assets/img/train-info.jpg" alt=""> -->
+                        <div class="info-tickets-train-2 ">
+                            <div class="info-tickets-train-image"></div>
+                            <p>TÀU  @item.Train.Name - @item.TrainStationFrom.Name - @item.TrainStationTo.Name</p>
+                        </div>
+                        @Html.ActionLink("--- Click here for booking ---", "GetDetailTrip", "Client", new { id = @item.Id }, null)
+                        <ul class="info-tickets-train-ul">
+                            <li><i class="fas fa-train"></i> <span>465.000 VND - 600.000 VNĐ</span> </li>
+                            <li><i class="far fa-clock"></i> <span>20:55</span> </li>
+                            <li><i class="fas fa-star"></i> <span>Cabin 4 Giường Điều Hòa</span></li>
+                        </ul>
+                    </div>
+                }
+            }
+            <!--<div class="col l-3 ">-->
+            <!-- <img src="/assets/img/train-info.jpg" alt=""> -->
+            <!--<div class="info-tickets-train-2 ">
+                <div class="info-tickets-train-image"></div>
+                <p>TÀU SP2 - 4 LÀO CAI - HÀ NỘI</p>
+            </div>
+
+            <ul class="info-tickets-train-ul">
+                <li><i class="fas fa-train"></i> <span>465.000 VND</span> </li>
+                <li><i class="far fa-clock"></i> <span>20:55</span> </li>
+                <li><i class="fas fa-star"></i> <span>Cabin 4 Giường Điều Hòa</span></li>
+            </ul>
+            </div>-->
+        </div>
+
+        <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("SearchTrips",
+            new { page, fromStation = ViewBag.fromStation, toStation = ViewBag.toStation, startDate = ViewBag.startDate }))
+    </div>
+</div>
