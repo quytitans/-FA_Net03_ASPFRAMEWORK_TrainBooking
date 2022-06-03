@@ -28,7 +28,7 @@
         <div class="tab-pane active">
             <div class="grid wide main">
                 <div class="row">
-                    <div class="l-6 container-book-tickets">
+                    <div class="l-6 container-book-tickets" >
                         @foreach (var ticketByTrip in ViewBag.listTicketByTrip)
                         {
 
@@ -63,7 +63,6 @@
                                                     break;
                                                 case 4:
                                                     <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-startDateTime="@ticket.Trip.StartDateTime"> D @i </span>
-
                                                     break;
                                             }
 
@@ -92,7 +91,7 @@
 
                 for (var i = 0; i < checkToa.length; i++) {
                     if (e.target.id == checkToa[i].getAttribute("data-name")) {
-                        checkToa[i].style.display = "block"
+                        checkToa[i].style.display = "grid"
                     } else {
                         checkToa[i].style.display = "none"
                     }
