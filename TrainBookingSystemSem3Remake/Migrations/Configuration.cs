@@ -95,7 +95,17 @@
                 new TrainCarriages{Name= "Toa 1", NumRow = 12, NumCol = 4, TrainId = 5},
                 new TrainCarriages{Name= "Toa 2", NumRow = 12, NumCol = 4, TrainId = 5},
                 new TrainCarriages{Name= "Toa 3", NumRow = 12, NumCol = 4, TrainId = 5},
-                new TrainCarriages{Name= "Toa 4", NumRow = 12, NumCol = 4, TrainId = 5}
+                new TrainCarriages{Name= "Toa 4", NumRow = 12, NumCol = 4, TrainId = 5},
+                new TrainCarriages{Name= "Toa 1", NumRow = 12, NumCol = 4, TrainId = 6},
+                new TrainCarriages{Name= "Toa 2", NumRow = 12, NumCol = 4, TrainId = 6},
+                new TrainCarriages{Name= "Toa 1", NumRow = 12, NumCol = 4, TrainId = 7},
+                new TrainCarriages{Name= "Toa 2", NumRow = 12, NumCol = 4, TrainId = 7},
+                new TrainCarriages{Name= "Toa 1", NumRow = 12, NumCol = 4, TrainId = 8},
+                new TrainCarriages{Name= "Toa 2", NumRow = 12, NumCol = 4, TrainId = 8},
+                new TrainCarriages{Name= "Toa 1", NumRow = 12, NumCol = 4, TrainId = 9},
+                new TrainCarriages{Name= "Toa 2", NumRow = 12, NumCol = 4, TrainId = 9},
+                new TrainCarriages{Name= "Toa 1", NumRow = 12, NumCol = 4, TrainId = 10},
+                new TrainCarriages{Name= "Toa 2", NumRow = 12, NumCol = 4, TrainId = 10},
             };
             trainCarriages.ForEach(s => trainContext.TrainCarriages.Add(s));
             trainContext.SaveChanges();
