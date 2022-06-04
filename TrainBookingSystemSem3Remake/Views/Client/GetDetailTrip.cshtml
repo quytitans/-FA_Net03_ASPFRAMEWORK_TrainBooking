@@ -5,6 +5,8 @@
 @section link
 {
     <link rel="stylesheet" href="~/Content/assets_client/css/ticket4-12.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.17/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
 }
 <div>
     <!-- Tab items -->
@@ -53,7 +55,7 @@
                                             switch (j)
                                             {
                                                 case 1:
-                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-startDateTime="@ticket.Trip.StartDateTime" > A @i </span>
+                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-startDateTime="@ticket.Trip.StartDateTime"> A @i </span>
                                                     break;
                                                 case 2:
                                                     <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-startDateTime="@ticket.Trip.StartDateTime"> B @i </span>
@@ -82,7 +84,7 @@
 
 
 <script>
-    
+
     document.addEventListener('DOMContentLoaded', function () {
         document.addEventListener('click', function (e) {
             if (e.target && e.target.classList.contains('trainCarriagesName')) {
@@ -107,26 +109,77 @@
 
             var price = $(this).data('price');
             var startDateTime = $(this).data('startdatetime');
-            
-            if (confirm(`Bạn có chắc muốn đặt vé có giá ${price} và thời gian khởi hành là ${startDateTime}`)) {
-                $.ajax({
-                    url: "/Client/ChangeStatusTicket",
-                    type: 'POST',
-                    data: data,
-                    success: function (data) {
-                        console.log("console log thư thành công: ", data);
-                        window.location.reload(false);
-                    },
-                    error: function (request, error) {
-                        console.log("Request: " + request);
-                    }
-                });
-            }
+
+            // confirm box
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: `Your booking ticket has price is ${price} and time start is ${startDateTime}`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, book this ticket!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire(
+                        'Booked!',
+                        'Your booking is recorded.',
+                        'success'
+                    )
+
+                    $.ajax({
+                        url: "/Client/ChangeStatusTicket",
+                        type: 'POST',
+                        data: data,
+                        success: function (data) {
+                            console.log("console log thư thành công: ", data);
+                            window.location.reload(false);
+                        },
+                        error: function (request, error) {
+                            console.log("Request: " + request);
+                        }
+                    });
+
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your booking is cancelled :)',
+                        'Try again'
+                    )
+                }
+            })
+
+
+            //if (confirm(`Bạn có chắc muốn đặt vé có giá ${price} và thời gian khởi hành là ${startDateTime}`)) {
+            //    $.ajax({
+            //        url: "/Client/ChangeStatusTicket",
+            //        type: 'POST',
+            //        data: data,
+            //        success: function (data) {
+            //            console.log("console log thư thành công: ", data);
+            //            window.location.reload(false);
+            //        },
+            //        error: function (request, error) {
+            //            console.log("Request: " + request);
+            //        }
+            //    });
+            //}
         });
 
-        
+
     })
 
-    
+
 </script>
 
