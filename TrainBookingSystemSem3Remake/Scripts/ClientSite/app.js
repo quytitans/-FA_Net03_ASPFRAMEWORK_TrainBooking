@@ -1,7 +1,9 @@
 ﻿// slider
+var sizeSlider = document.getElementsByClassName('slide')[0].clientWidth;
+console.log(sizeSlider); // 1000 (width class slide = 1000px)
 var moveSlider = document.getElementsByClassName("move-slider")[0]
 var Img = moveSlider.getElementsByTagName("img");
-var Max = sizeSlider * Img.length; // 1000 * Img.length
+var Max = sizeSlider * Img.length; // 1000  Img.length
 Max -= sizeSlider;
 var moveReset = 0;
 function Next() {
@@ -72,10 +74,10 @@ function toggleModal(e) {
 
 }
 btnOpen.addEventListener('click', toggleModal)
-btnClose.addEventListener('click', toggleModal)
-iconClose.addEventListener('click', toggleModal)
-modal.addEventListener('click', function (e) {
-    if (e.target == e.currentTarget) {
-        toggleModal()
-    }
-})
+/*btnClose.addEventListener('click', toggleModal)*/
+//iconClose.addEventListener('click', toggleModal)
+//modal.addEventListener('click', function (e) {
+//    if (e.target == e.currentTarget) {
+//        toggleModal()
+//    }
+//})
