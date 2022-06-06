@@ -17,6 +17,20 @@ namespace TrainBookingSystemSem3Remake.Controllers
     {
         private TrainContext db = new TrainContext();
 
+        public ActionResult DashBoard()
+        {
+            return View();
+        }
+
+        //Get All ticket
+        public ActionResult GetAllTicket(int? page)
+        {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            var tickets = db.Tickets.ToList();
+            return View(tickets.ToPagedList(pageNumber, pageSize));
+        }
+
         // GET: Trips
         public ActionResult Index(int? fromStationId, int? toStationId, int? status, string startDate, string endDate, int? page)
         {
