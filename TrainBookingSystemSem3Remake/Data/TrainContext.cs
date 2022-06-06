@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -7,7 +8,7 @@ using TrainBookingSystemSem3Remake.Models;
 
 namespace TrainBookingSystemSem3Remake.Data
 {
-    public class TrainContext : DbContext
+    public class TrainContext : IdentityDbContext<IdentityUser>
     {
         public TrainContext() : base("name=TrainDB")
         {
@@ -39,6 +40,10 @@ namespace TrainBookingSystemSem3Remake.Data
                  .HasRequired<TrainStation>(s => s.TrainStationTo)
                  .WithMany(g => g.TripTo)
                  .HasForeignKey<int>(s => s.ToStationId).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
+            modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
+            modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
         }
     }
 }
