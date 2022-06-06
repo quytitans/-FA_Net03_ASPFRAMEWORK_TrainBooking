@@ -6,7 +6,7 @@
 {
     <link rel="stylesheet" href="~/Content/assets_client/css/ticket4-12.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.17/dist/sweetalert2.all.min.js"></script>
-    
+
 }
 <div>
     <!-- Tab items -->
@@ -24,13 +24,14 @@
         }
         <div class="line"></div>
     </div>
+    <a href="@Url.Action("Payment","Client")">Thanh toán</a>
 
     <!-- Tab content -->
     <div class="tab-content">
         <div class="tab-pane active">
             <div class="grid wide main">
                 <div class="row">
-                    <div class="l-6 container-book-tickets" >
+                    <div class="l-6 container-book-tickets">
                         @foreach (var ticketByTrip in ViewBag.listTicketByTrip)
                         {
 
@@ -49,6 +50,7 @@
                                                 if (item.Row == i && item.Colunm == j)
                                                 {
                                                     ticket = item;
+
                                                 }
                                             }
 
@@ -100,13 +102,11 @@
                 }
             }
         })
-
         //Xử lý vé
         $(document).on("click", '.ticketCheck', function () {
             let data = {
                 id: $(this).data('id')
             };
-
             var price = $(this).data('price');
             var startDateTime = $(this).data('startdatetime');
             var status = $(this).data('status');
@@ -120,83 +120,53 @@
                 buttonsStyling: false
             })
 
-            if (status == 2) {
-                swalWithBootstrapButtons.fire(
-                    'Can not booking this',
-                    'Chỗ này đã được đặt',
-                    'Try again'
-                )
-            } else {
-                swalWithBootstrapButtons.fire({
-                    title: 'Are you sure?',
-                    text: `Your booking ticket has price is ${price} and time start is ${startDateTime}`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, book this ticket!',
-                    cancelButtonText: 'No, cancel!',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        swalWithBootstrapButtons.fire(
-                            'Booked!',
-                            'Your booking is recorded.',
-                            'success'
-                        )
 
-                        $.ajax({
-                            url: "/Client/ChangeStatusTicket",
-                            type: 'POST',
-                            data: data,
-                            success: function (data) {
-                                console.log("console log thư thành công: ", data);
-                                if (data == null || data == "") {
-                                    swalWithBootstrapButtons.fire(
-                                        'Must Login',
-                                        'You must login before booking',
-                                        'Try again'
-                                    )
-                                } else {
-                                    window.location.reload(false);
-                                }
-                            },
-                            error: function (request, error) {
-                                console.log("Request: " + request);
-                            }
-                        });
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: `Your booking ticket has price is ${price} and time start is ${startDateTime}`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, book this ticket!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire(
+                        'Booked!',
+                        'Your booking is recorded.',
+                        'success'
 
-                    } else if (
-                        /* Read more about handling dismissals below */
-                        result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                        swalWithBootstrapButtons.fire(
-                            'Cancelled',
-                            'Your booking is cancelled :)'
-                        )
-                    }
-                })
-            }
-
-
-
-            //if (confirm(`Bạn có chắc muốn đặt vé có giá ${price} và thời gian khởi hành là ${startDateTime}`)) {
-            //    $.ajax({
-            //        url: "/Client/ChangeStatusTicket",
-            //        type: 'POST',
-            //        data: data,
-                    //success: function (data) {
-                    //    console.log("console log thư thành công: ", data);
-                    //    window.location.reload(false);
-                    //},
-                    //error: function (request, error) {
-                    //    console.log("Request: " + request);
+                    )
+                    //for (const item in items) {
+                    //    console.log(item);
                     //}
-                //});
-            //}
-        });
+                    $.ajax({
+                        url: "/Client/AddToCart",
+                        type: 'GET',
+                        data: data,
+                        success: function (data) {
+                            console.log("console log thư thành công: ", data);
 
 
+                        },
+                        error: function (request, error) {
+                            console.log("Request: " + request);
+                        }
+                    });
+
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your booking is cancelled :)',
+                        'Try again'
+                    )
+                }
+            })
+        })
     })
-
 
 </script>
 
