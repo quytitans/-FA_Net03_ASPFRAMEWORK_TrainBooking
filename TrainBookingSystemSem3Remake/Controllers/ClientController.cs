@@ -1,12 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Newtonsoft.Json;
 using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TrainBookingSystemSem3Remake.Data;
+using TrainBookingSystemSem3Remake.Models;
 using TrainBookingSystemSem3Remake.Models.ViewModel;
 
 namespace TrainBookingSystemSem3Remake.Controllers
@@ -14,6 +20,17 @@ namespace TrainBookingSystemSem3Remake.Controllers
     public class ClientController : Controller
     {
         private TrainContext db = new TrainContext();
+        private UserManager<IdentityUser> userManager; //Bên database
+        private RoleManager<IdentityRole> roleManager; //Bên database
+
+        public ClientController()
+        {
+            db = new TrainContext();
+            UserStore<IdentityUser> userStore = new UserStore<IdentityUser>(db); // create, update, delete giống UserModel
+            userManager = new UserManager<IdentityUser>(userStore); // giống Service, xử lý các vấn đề liên quan đến logic
+            RoleStore<IdentityRole> roleStore = new RoleStore<IdentityRole>(db); // create, update, delete giống UserModel
+            roleManager = new RoleManager<IdentityRole>(roleStore); // giống Service, xử lý các vấn đề liên quan đến logic
+        }
         // GET: Client
         public ActionResult Index()
         {
@@ -27,26 +44,125 @@ namespace TrainBookingSystemSem3Remake.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult SearchTrips(int fromStation, int toStation , DateTime startDate, int? page)
-        //{
-        //    var listTrip = db.Trips.OrderBy(s => s.Id).AsQueryable().Where(s => s.FromStationId == fromStation && s.ToStationId == toStation);
+        public async Task<ActionResult> AddRole(string RoleName)
+        {
+            IdentityRole role = new IdentityRole()
+            {
+                Name = RoleName
+            };
+            var result = await roleManager.CreateAsync(role);
+            if (result.Succeeded)
+            {
+                return View("ViewSuccess");
+            }
+            else
+            {
+                return View("ViewError");
+            }
+        }
 
-        //    if (startDate != null)
-        //    {
-        //        var startDateTime0000 = startDate;
-        //        var startDateTime2359 = startDate.AddDays(1).AddTicks(-1);
-        //        listTrip = listTrip.Where(s => s.StartDateTime >= startDateTime0000 && s.StartDateTime <= startDateTime2359);
-        //    }
+        public async Task<bool> AddUserToRoleAsync(string UserId, string RoleName)
+        {
+            var user = db.Users.Find(UserId);
+            var role = db.Roles.AsQueryable().Where(roleFind => roleFind.Name.Contains(RoleName)).FirstOrDefault();
+            if (user == null || role == null)
+            {
+                return false;
+            }
+            var result = await userManager.AddToRoleAsync(user.Id, role.Name);
+            //string roleName1 = "Admin";
+            //string roleName2 = "User";
+            ////var result = await userManager.AddToRoleAsync(userId, roleName);
+            //var result = await userManager.AddToRolesAsync(userId, roleName1, roleName2); // Thêm nhiều Role cho 1 User
+            if (result.Succeeded)
+            {
+                return true;
+            }
+            else
+            {
+                ViewBag.Errors = result.Errors;
+                System.Diagnostics.Debug.WriteLine("Lỗi tạo quyền có lỗi là ", result.Errors);
+                return false;
+            }
+        }
 
-        //    int pageSize = 3;
-        //    int pageNumber = (page ?? 1);
-        //    ViewBag.startDate = startDate;
-        //    ViewBag.fromStation = fromStation;
-        //    ViewBag.toStation = toStation;
-        //    return View("ListTripsSelected",listTrip.ToPagedList(pageNumber, pageSize));
-        //}
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(string Username, string Password)
+        {
+            IdentityUser user = new IdentityUser()
+            {
+                UserName = Username
+            };
+
+            var result = await userManager.CreateAsync(user, Password);
+            if (result.Succeeded)
+            {
+                var queryUser = db.Users.AsQueryable().Where(userFind => userFind.UserName.Contains(Username)).FirstOrDefault();
+                Debug.WriteLine("Tìm user có name là: ", Username);
+                Debug.WriteLine("Tạo quyền User cho user có id là: ", queryUser.Id);
+                if (queryUser == null)
+                {
+                    ViewBag.ErrorNull = "Không tìm thấy khi queryUser";
+                    Debug.WriteLine("Tạo quyền User cho user có id là: ", queryUser.Id);
+                    return View("ViewError");
+                }
+                var check = await AddUserToRoleAsync(queryUser.Id, "User");
+                if (check)
+                {
+                    return View("ViewSuccess");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Lỗi tạo quyền");
+                    return View("ViewError");
+                }
+            }
+            else
+            {
+                ViewBag.Errors = result.Errors;
+                System.Diagnostics.Debug.WriteLine("Lỗi đăng ký là ", result.Errors);
+                return View("ViewError");
+            }
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(string UserName, string Password)
+        {
+            var user = await userManager.FindAsync(UserName, Password);
+            Debug.WriteLine("user đăng nhập là ", user);
+            if (user == null)
+            {
+                ViewBag.Errors = new string[] { "Không tìm thấy user" };
+                return View("ViewError");
+            }
+            else
+            {
+                SignInManager<IdentityUser, string> signInManager = new SignInManager<IdentityUser, string>(userManager, Request.GetOwinContext().Authentication);
+                await signInManager.SignInAsync(user, false, false);
+                Session["userId"] = user.Id;
+
+                return Redirect("/Client/HomePage");
+            }
+        }
+
+        public ActionResult Logout()
+        {
+            HttpContext.GetOwinContext().Authentication.SignOut();
+            return Redirect("/Client/HomePage");
+        }
+
 
         public ActionResult SearchTrips(int? fromStation, int? toStation, String startDate, int? page)
         {
@@ -78,7 +194,7 @@ namespace TrainBookingSystemSem3Remake.Controllers
             ViewBag.fromStationId = fromStation;
             ViewBag.startDate = startDate;
 
-            int pageSize = 2;
+            int pageSize = 4;
             int pageNumber = (page ?? 1);
             return View("ListTripsSelected", trips.ToPagedList(pageNumber, pageSize));
         }
@@ -111,26 +227,36 @@ namespace TrainBookingSystemSem3Remake.Controllers
             return View();
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpPost]
         public JsonResult ChangeStatusTicket(int id)
         {
-            var ticket = db.Tickets.Find(id);
+                var ticket = db.Tickets.Find(id);
 
-            switch (ticket.Status)
-            {
-                case 1:
-                    ticket.Status = 2;
-                    ticket.BookingDate = DateTime.Now;
-                    break;
-                case 2:
-                    ticket.Status = 1;
-                    ticket.BookingDate = DateTime.Now;
-                    break;
-            }
+                switch (ticket.Status)
+                {
+                    case 1:
+                        ticket.Status = 2;
+                        ticket.BookingDate = DateTime.Now;
+                        break;
+                    case 2:
+                        ticket.Status = 1;
+                        ticket.BookingDate = DateTime.Now;
+                        break;
+                }
 
-            db.Tickets.AddOrUpdate(ticket);
-            db.SaveChanges();
-            return Json("OK id la: " + id);
+                db.Tickets.AddOrUpdate(ticket);
+                db.SaveChanges();
+
+                //var userId = Session["userId"];
+                //var ticketBooking = new TicketBooking()
+                //{
+
+                //}
+                
+
+                return Json("OK id la: " + id);
+            
         }
         
     }
