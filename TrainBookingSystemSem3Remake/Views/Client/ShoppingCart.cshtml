@@ -1,0 +1,51 @@
+﻿@model IEnumerable<TrainBookingSystemSem3Remake.Models.Cart>
+@{
+    ViewBag.Title = "GetDetailTrip";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+@{
+    var totalPrice = 0.0;
+}
+@section link
+{
+    <link rel="stylesheet" href="~/Content/assets_client/css/ticket4-12.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.17/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+}
+<h2>ShoppingCart</h2>
+<table class="table">
+    <thead>
+        <tr>
+
+            <th scope="col">Mã vé</th>
+            <th scope="col">Giá tiền</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Ngày đặt vé</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            double price = 0.0;
+            <tr>
+                <th scope="row">@item.Ticket.Id</th>
+                <td>@item.Ticket.Price.ToString("#,##0").Replace(',', ',') VNĐ</td>
+                <td>@item.Quantity</td>
+                <td>@DateTime.Now</td>
+            </tr>
+            price += item.Ticket.Price;
+            totalPrice += price;
+        }
+    </tbody>
+</table>
+<div class="row">
+    <div class="col">
+        <h3>Tổng Tiền: </h3>
+    </div>
+    <div class="col">
+        <h3>@totalPrice.ToString("#,##0").Replace(',', ',') VNĐ</h3>
+    </div>
+    <div class="col">
+        <button style="margin-top:20px" class="btn btn-danger"><a href="@Url.Action("Payment","Client")">Checkout</a></button>
+    </div>
+</div>

@@ -1,10 +1,14 @@
-﻿using PagedList;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TrainBookingSystemSem3Remake.Data;
@@ -15,7 +19,10 @@ namespace TrainBookingSystemSem3Remake.Controllers
 {
     public class TripsController : Controller
     {
-        private TrainContext db = new TrainContext();
+        private TrainContext db;
+        
+        private UserManager<IdentityUser> userManager; //Bên database
+        private RoleManager<IdentityRole> roleManager; //Bên database
 
         public ActionResult DashBoard()
         {
@@ -31,6 +38,16 @@ namespace TrainBookingSystemSem3Remake.Controllers
             return View(tickets.ToPagedList(pageNumber, pageSize));
         }
 
+        public TripsController()
+        {
+            db = new TrainContext();
+            UserStore<IdentityUser> userStore = new UserStore<IdentityUser>(db); // create, update, delete giống UserModel
+            userManager = new UserManager<IdentityUser>(userStore); // giống Service, xử lý các vấn đề liên quan đến logic
+            RoleStore<IdentityRole> roleStore = new RoleStore<IdentityRole>(db); // create, update, delete giống UserModel
+            roleManager = new RoleManager<IdentityRole>(roleStore); // giống Service, xử lý các vấn đề liên quan đến logic
+        }
+
+        [Authorize(Roles = "Admin")]
         // GET: Trips
         public ActionResult Index(int? fromStationId, int? toStationId, int? status, string startDate, string endDate, int? page)
         {
@@ -85,6 +102,7 @@ namespace TrainBookingSystemSem3Remake.Controllers
             return View(trips.ToPagedList(pageNumber, pageSize));
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Trips/Details/5
         public ActionResult Details(int? id)
         {
@@ -92,17 +110,57 @@ namespace TrainBookingSystemSem3Remake.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Trip trip = db.Trips.Find(id);
-
-            ViewBag.Tickets = db.Tickets.Where(s => s.TripId == id).ToList();
-
+            var trip = db.Trips.Find(id);
             if (trip == null)
             {
                 return HttpNotFound();
             }
-            return View(trip);
+            ViewBag.DetailTrip = trip;
+            var listTrainCarriages = db.TrainCarriages.Where(s => s.TrainId == trip.TrainId).ToList();
+            ViewBag.listTrainCarriages = listTrainCarriages;
+            var TicketByTrip = db.Tickets.Where(s => s.TripId == trip.Id);
+            var listTicketByTrip = new List<ListTicketByTrainCarriages>();
+            foreach (var item in listTrainCarriages)
+            {
+                var listTicketByTrainCarriages = new ListTicketByTrainCarriages()
+                {
+                    TrainCarriagesId = item.Id,
+                    TrainCarriagesName = item.Name,
+                    Tickets = TicketByTrip.Where(s => s.TrainCarriagesId == item.Id).ToList()
+                };
+                listTicketByTrip.Add(listTicketByTrainCarriages);
+            }
+            ViewBag.listTicketByTrip = listTicketByTrip;
+
+            return View();
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public JsonResult ChangeStatusTicket(int id)
+        {
+
+            var ticket = db.Tickets.Find(id);
+
+            switch (ticket.Status)
+            {
+                case 1:
+                    ticket.Status = 2;
+                    ticket.BookingDate = DateTime.Now;
+                    break;
+                case 2:
+                    ticket.Status = 1;
+                    ticket.BookingDate = DateTime.Now;
+                    break;
+            }
+
+            db.Tickets.AddOrUpdate(ticket);
+            db.SaveChanges();
+            return Json("OK id la: " + id);
+
+        }
+
+        [Authorize(Roles = "Admin")]
         // GET: Trips/Create
         public ActionResult Create()
         {
@@ -227,6 +285,7 @@ namespace TrainBookingSystemSem3Remake.Controllers
             return View(trip);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Trips/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -264,6 +323,7 @@ namespace TrainBookingSystemSem3Remake.Controllers
             return View(trip);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Trips/Delete/5
         public ActionResult Delete(int? id)
         {

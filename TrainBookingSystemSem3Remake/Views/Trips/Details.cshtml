@@ -1,119 +1,234 @@
-﻿@model TrainBookingSystemSem3Remake.Models.Trip
+﻿@*@model TrainBookingSystemSem3Remake.Models.Trip*@
 
 @{
     ViewBag.Title = "Details";
+    <link rel="stylesheet" href="~/Content/assets_client/css/styles.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="~/Content/assets_client/css/ticket4-12.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.17/dist/sweetalert2.all.min.js"></script>
 }
 
 <h2>Details</h2>
 
 <div>
     <h4>Trip</h4>
+
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Train.Name)
+            Train Name
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Train.Name)
+            @ViewBag.DetailTrip.Train.Name
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TrainStationFrom.Name)
+            TrainStationFrom Name
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TrainStationFrom.Name)
+            @ViewBag.DetailTrip.TrainStationFrom.Name
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TrainStationTo.Name)
+            TrainStationTo Name
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TrainStationTo.Name)
+            @ViewBag.DetailTrip.TrainStationTo.Name
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.StartDateTime)
+            StartDateTime
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.StartDateTime)
+            @ViewBag.DetailTrip.StartDateTime
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.EndDateTime)
+            EndDateTime
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.EndDateTime)
+            @ViewBag.DetailTrip.EndDateTime
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Status)
+            Status
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Status)
+            @ViewBag.DetailTrip.Status
         </dd>
 
     </dl>
 
-    <table class="table">
-        <tr>
-            <th>
-                Id
-            </th>
-            <th>
-                Row
-            </th>
-            <th>
-                Colunm
-            </th>
-            <th>
-                Price
-            </th>
-            <th>
-                BookingDate
-            </th>
-            <th>
-                Status
-            </th>
-            <th></th>
-        </tr>
+    <h3>Danh sách vé</h3>
 
-        <h3>Danh sách vé</h3>
+    <div>
+        <!-- Tab items -->
+        <div class="tabs tabs-center ">
+            @{
+                foreach (var item in ViewBag.listTrainCarriages)
+                {
+                    <div class="trainCarriagesName tab-item" id="@item.Name">
+                        <i class="tab-icon fas fas fa-train"></i>
+                        @item.Name
+                    </div>
+                }
 
-        @foreach (var item in ViewBag.Tickets)
-        {
-            <tr>
-                <td>
-                    @*@Html.DisplayFor(modelItem => item.TrainCarriages.Id)*@
-                    @item.Id
-                </td>
-                <td>
-                    @item.Row
-                </td>
-                <td>
-                    @item.Colunm
-                </td>
-                <td>
-                    @item.Price
-                </td>
 
-                <td>
-                    @(item.BookingDate == "" ? item.BookingDate: "chưa đặt chỗ")
-                </td>
-                <td>
-                    @item.Status
-                </td>
-            </tr>
-        }
+            }
+            <div class="line"></div>
+        </div>
 
-    </table>
+        <!-- Tab content -->
+        <div class="tab-content">
+            <div class="tab-pane active">
+                <div class="grid wide main">
+                    <div class="row">
+                        <div class="l-6 container-book-tickets">
+                            @foreach (var ticketByTrip in ViewBag.listTicketByTrip)
+                            {
+
+                                <div class="grid-container" data-name="@ticketByTrip.TrainCarriagesName" style="display:@(ticketByTrip.TrainCarriagesName == "Toa 1" ? "" : "none")">
+
+                                    @{
+                                        var listTicket = ticketByTrip.Tickets;
+                                        for (int i = 1; i <= 12; i++)
+                                        {
+                                            for (int j = 1; j <= 4; j++)
+                                            {
+                                                <!--<span class="grid-item"> @i - @j </span>-->
+                                                var ticket = listTicket[0];
+                                                foreach (var item in listTicket)
+                                                {
+                                                    if (item.Row == i && item.Colunm == j)
+                                                    {
+                                                        ticket = item;
+                                                    }
+                                                }
+
+                                                switch (j)
+                                                {
+                                                    case 1:
+                                                        <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> A @i </span>
+                                                        break;
+                                                    case 2:
+                                                        <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> B @i </span>
+                                                        break;
+                                                    case 3:
+                                                        <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> C @i </span>
+                                                        break;
+                                                    case 4:
+                                                        <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> D @i </span>
+                                                        break;
+                                                }
+
+                                            }
+
+                                        }
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = ViewBag.DetailTrip.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.classList.contains('trainCarriagesName')) {
+                var checkToa = document.getElementsByClassName("grid-container");
+                //alert(checkToa[1].getAttribute("data-name"))
+
+                for (var i = 0; i < checkToa.length; i++) {
+                    if (e.target.id == checkToa[i].getAttribute("data-name")) {
+                        checkToa[i].style.display = "grid"
+                    } else {
+                        checkToa[i].style.display = "none"
+                    }
+                }
+            }
+        })
+
+        //Xử lý vé
+        $(document).on("click", '.ticketCheck', function () {
+            let data = {
+                id: $(this).data('id')
+            };
+
+            var price = $(this).data('price');
+            var startDateTime = $(this).data('startdatetime');
+            var status = $(this).data('status');
+
+            // confirm box
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            
+            swalWithBootstrapButtons.fire({
+                title: 'Are you sure?',
+                text: status == 2 ? `Are you sure disable this ticket has price is ${price} and time start is ${startDateTime}`: `Ticket has price is ${price} and time start is ${startDateTime}`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Check this ticket!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire(
+                        'Booked!',
+                        'Your booking is recorded.'      
+                    )
+                    $.ajax({
+                        url: "/Client/ChangeStatusTicket",
+                        type: 'POST',
+                        data: data,
+                        success: function (data) {
+                            console.log("console log thư thành công: ", data);
+                            if (data == null || data == "") {
+                                swalWithBootstrapButtons.fire(
+                                    'Must Login or not Authorization',
+                                    'You must login before booking or you are not Admin'
+                                )
+                            } else {
+                                window.location.reload(false);
+                            }
+                        },
+                        error: function (request, error) {
+                            console.log("Request: " + request);
+                        }
+                    });
+
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Your booking is cancelled :)'
+                    )
+                }
+            })
+            
+        });
+    })
+</script>
