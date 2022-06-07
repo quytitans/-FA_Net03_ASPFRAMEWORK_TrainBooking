@@ -24,7 +24,7 @@
         }
         <div class="line"></div>
     </div>
-    <a href="@Url.Action("Payment","Client")">Thanh toán</a>
+    <a href="@Url.Action("ShoppingCart","Client")">Thanh toán</a>
 
     <!-- Tab content -->
     <div class="tab-content">
@@ -57,16 +57,16 @@
                                             switch (j)
                                             {
                                                 case 1:
-                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> A @i </span>
+                                <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" style="@(ticket.Status == 3 ? "background-color:blue" : "")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> A @i </span>
                                                     break;
                                                 case 2:
-                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> B @i </span>
+                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" style="@(ticket.Status == 3 ? "background-color:blue" : "")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> B @i </span>
                                                     break;
                                                 case 3:
-                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> C @i </span>
+                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" style="@(ticket.Status == 3 ? "background-color:blue" : "")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> C @i </span>
                                                     break;
                                                 case 4:
-                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> D @i </span>
+                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" style="@(ticket.Status == 3 ? "background-color:blue" : "")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> D @i </span>
                                                     break;
                                             }
 
@@ -104,7 +104,7 @@
         })
         //Xử lý vé
         $(document).on("click", '.ticketCheck', function () {
-            let data = {
+            let dataId = {
                 id: $(this).data('id')
             };
             var price = $(this).data('price');
@@ -120,51 +120,77 @@
                 buttonsStyling: false
             })
 
+            if (status == 2) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Chỗ này đã được đặt :)',
+                )
+            } else {
+                swalWithBootstrapButtons.fire({
+                    title: 'Are you sure?',
+                    text: `Your booking ticket has price is ${price} and time start is ${startDateTime}`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, book this ticket!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "/Client/AddToCart",
+                            type: 'GET',
+                            data: dataId,
+                            success: function (data) {
+                                console.log("console log thư thành công: ", data);
+                                if (data == null || data == "") {
+                                    swalWithBootstrapButtons.fire(
+                                        'Must login',
+                                        'Yêu cầu đăng nhập',
+                                    )
+                                } else {
+                                    $.ajax({
+                                        url: "/Client/ChangeStatusTicket",
+                                        type: 'POST',
+                                        data: dataId,
+                                        success: function (data) {
+                                            console.log("console log thư thành công: ", data);
+                                            if (data == null || data == "") {
+                                                swalWithBootstrapButtons.fire(
+                                                    'Must login',
+                                                    'Yêu cầu đăng nhập',
+                                                )
+                                            } else {
+                                                swalWithBootstrapButtons.fire(
+                                                    'Booked!',
+                                                    'Your booking is recorded.',
+                                                )
+                                                window.location.reload(false);
+                                            }
+                                        },
+                                        error: function (request, error) {
+                                            console.log("Request: " + request);
+                                        }
+                                    });
+                                }
 
-            swalWithBootstrapButtons.fire({
-                title: 'Are you sure?',
-                text: `Your booking ticket has price is ${price} and time start is ${startDateTime}`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes, book this ticket!',
-                cancelButtonText: 'No, cancel!',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    swalWithBootstrapButtons.fire(
-                        'Booked!',
-                        'Your booking is recorded.',
-                        'success'
+                            },
+                            error: function (request, error) {
+                                console.log("Request: " + request);
+                            }
+                        });
 
-                    )
-                    //for (const item in items) {
-                    //    console.log(item);
-                    //}
-                    $.ajax({
-                        url: "/Client/AddToCart",
-                        type: 'GET',
-                        data: data,
-                        success: function (data) {
-                            console.log("console log thư thành công: ", data);
-
-
-                        },
-                        error: function (request, error) {
-                            console.log("Request: " + request);
-                        }
-                    });
-
-                } else if (
-                    /* Read more about handling dismissals below */
-                    result.dismiss === Swal.DismissReason.cancel
-                ) {
-                    swalWithBootstrapButtons.fire(
-                        'Cancelled',
-                        'Your booking is cancelled :)',
-                        'Try again'
-                    )
-                }
-            })
+                    } else if (
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                            'Cancelled',
+                            'Your booking is cancelled :)',
+                            'Try again'
+                        )
+                    }
+                })
+            }
         })
     })
 
