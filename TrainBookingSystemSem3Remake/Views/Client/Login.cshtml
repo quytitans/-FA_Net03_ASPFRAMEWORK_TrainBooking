@@ -1,5 +1,6 @@
 ﻿@model TrainBookingSystemSem3Remake.Models.ViewModel.UserViewModel
 @{
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
     ViewBag.Title = "Login";
 }
 
@@ -10,7 +11,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>User</h4>
+        
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 

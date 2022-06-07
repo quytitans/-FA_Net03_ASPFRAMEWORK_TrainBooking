@@ -25,6 +25,7 @@ namespace TrainBookingSystemSem3Remake.Controllers
         private UserManager<IdentityUser> userManager; //Bên database
         private RoleManager<IdentityRole> roleManager; //Bên database
         private List<Cart> listTickets;
+        private static double total = 0.0;
 
         public ClientController()
         {
@@ -269,7 +270,7 @@ namespace TrainBookingSystemSem3Remake.Controllers
         public ActionResult Payment()
         {
             listTickets = Session["CartItems"] as List<Cart>;
-            double total = 0.0;
+            
             string url = ConfigurationManager.AppSettings["vnp_Url"];
             string returnUrl = ConfigurationManager.AppSettings["vnp_Returnurl"];
             string tmnCode = ConfigurationManager.AppSettings["vnp_TmnCode"];
@@ -329,13 +330,33 @@ namespace TrainBookingSystemSem3Remake.Controllers
                 {
                     if (vnp_ResponseCode == "00")
                     {
+                        var userId = Session["userId"] as string;
+                        var ticketBooking = new TicketBooking()
+                        {
+                            BookingDate = DateTime.Now,
+                            IdentityUserId = userId,
+                            TotalPrice = total * 100
+                        };
+                        db.TicketBookings.AddOrUpdate(ticketBooking);
+                        db.SaveChanges();
                         foreach (var item in listTickets)
                         {
                             item.Ticket.Status = 3;
                             db.Tickets.AddOrUpdate(item.Ticket);
+
+                            var ticketBookingDetail = new TicketBookingDetail()
+                            {
+                                TicketId = item.Ticket.Id,
+                                TicketBookingId = ticketBooking.Id,
+                                UnitPrice = (int) item.Ticket.Price
+                            };
+                            db.TicketBookingDetails.AddOrUpdate(ticketBookingDetail);
                             db.SaveChanges();
                         }
+                        
+                        db.TicketBookings.AddOrUpdate(ticketBooking);
                         //Thanh toán thành công
+                        Session.Remove("CartItems");
                         ViewBag.Message = "Thanh toán thành công hóa đơn " + orderId + " | Mã giao dịch: " + vnpayTranId;
                         string paymentUrl = pay.CreateRequestUrl(query, hashSecret);
                     }

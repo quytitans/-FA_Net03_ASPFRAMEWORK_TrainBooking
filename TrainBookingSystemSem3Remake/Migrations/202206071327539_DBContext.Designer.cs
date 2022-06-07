@@ -13,7 +13,7 @@ namespace TrainBookingSystemSem3Remake.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202206071217590_DBContext"; }
+            get { return "202206071327539_DBContext"; }
         }
         
         string IMigrationMetadata.Source

@@ -12,6 +12,12 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.17/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="sweetalert2.min.css">
 }
+<style>
+    .btn-danger a {
+        text-decoration: none;
+        color: white;
+    }
+</style>
 <h2>ShoppingCart</h2>
 <table class="table">
     <thead>
@@ -24,28 +30,36 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @if (Model != null)
         {
-            double price = 0.0;
-            <tr>
-                <th scope="row">@item.Ticket.Id</th>
-                <td>@item.Ticket.Price.ToString("#,##0").Replace(',', ',') VNĐ</td>
-                <td>@item.Quantity</td>
-                <td>@DateTime.Now</td>
-            </tr>
-            price += item.Ticket.Price;
-            totalPrice += price;
+            foreach (var item in Model)
+            {
+                double price = 0.0;
+                <tr>
+                    <th scope="row">@item.Ticket.Id</th>
+                    <td>@item.Ticket.Price.ToString("#,##0").Replace(',', ',') VNĐ</td>
+                    <td>@item.Quantity</td>
+                    <td>@DateTime.Now</td>
+                </tr>
+                price += item.Ticket.Price;
+                totalPrice += price;
+            }
         }
     </tbody>
 </table>
-<div class="row">
-    <div class="col">
-        <h3>Tổng Tiền: </h3>
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col">
+            <h3>Tổng Tiền: </h3>
+        </div>
+        <div class="col">
+
+            <h3>@totalPrice.ToString("#,##0").Replace(',', ',') VNĐ</h3>
+
+        </div>
+        <div class="col">
+            <button style="margin-top:20px" class="btn btn-danger"><a href="@Url.Action("Payment","Client")">Checkout</a></button>
+        </div>
     </div>
-    <div class="col">
-        <h3>@totalPrice.ToString("#,##0").Replace(',', ',') VNĐ</h3>
-    </div>
-    <div class="col">
-        <button style="margin-top:20px" class="btn btn-danger"><a href="@Url.Action("Payment","Client")">Checkout</a></button>
-    </div>
-</div>
+}

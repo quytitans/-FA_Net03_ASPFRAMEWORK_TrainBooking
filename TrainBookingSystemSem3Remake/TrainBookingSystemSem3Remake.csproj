@@ -170,9 +170,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202206071217590_DBContext.cs" />
-    <Compile Include="Migrations\202206071217590_DBContext.designer.cs">
-      <DependentUpon>202206071217590_DBContext.cs</DependentUpon>
+    <Compile Include="Migrations\202206071327539_DBContext.cs" />
+    <Compile Include="Migrations\202206071327539_DBContext.designer.cs">
+      <DependentUpon>202206071327539_DBContext.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cart.cs" />
@@ -372,8 +372,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202206071217590_DBContext.resx">
-      <DependentUpon>202206071217590_DBContext.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202206071327539_DBContext.resx">
+      <DependentUpon>202206071327539_DBContext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

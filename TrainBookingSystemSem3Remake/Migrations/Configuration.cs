@@ -1,5 +1,6 @@
 ﻿namespace TrainBookingSystemSem3Remake.Migrations
 {
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
@@ -108,6 +109,14 @@
                 new TrainCarriages{Name= "Toa 2", NumRow = 12, NumCol = 4, TrainId = 10},
             };
             trainCarriages.ForEach(s => trainContext.TrainCarriages.Add(s));
+            trainContext.SaveChanges();
+
+            var roles = new List<IdentityRole>
+            {
+                new IdentityRole {Name="Admin"},
+                new IdentityRole {Name="User"},
+            };
+            roles.ForEach(s => trainContext.Roles.Add(s));
             trainContext.SaveChanges();
         }
     }
