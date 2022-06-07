@@ -190,12 +190,13 @@ demo = {
             labels: ['53%', '36%', '11%'],
             series: [53, 36, 11]
         });
-
+        var stringList = $('#nvq001').val;
+        var arrResult = stringList.split(" ");
         //data here nguyen van quy
         var dataSales = {
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            series: [
-                [23, 113, 67, 108, 190, 239, 307, 308, 439, 410, 410, 509, 190, 239, 307, 308, 439, 410, 410, 509]
+            series: [arrResult
+                //[23, 113, 67, 108, 190, 239, 307, 308, 439, 410, 410, 509, 190, 239, 307, 308, 439, 410, 410, 509]
             ]
         };
 

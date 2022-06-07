@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "Create";
 }
+
+<input style="display: none" type="text" name="name" value="200 300 400 450 500 550 600 400 200 600 400 200" id="ticketGroupByMonth"/>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
