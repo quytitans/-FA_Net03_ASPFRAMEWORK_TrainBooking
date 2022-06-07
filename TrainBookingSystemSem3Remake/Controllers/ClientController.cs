@@ -352,7 +352,7 @@ namespace TrainBookingSystemSem3Remake.Controllers
                 }
             }
 
-            return Redirect(query);
+            return View();
         }
 
 
