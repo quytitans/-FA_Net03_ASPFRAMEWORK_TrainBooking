@@ -26,6 +26,90 @@ namespace TrainBookingSystemSem3Remake.Controllers
 
         public ActionResult DashBoard()
         {
+            ViewBag.thang01 = db.TicketBookingDetails.Join(db.TicketBookings, p => p.TicketBookingId, e => e.Id,
+                 (p, e) => new
+                 {
+                     Id = p.TicketBookingId,
+                     Id2 = p.TicketId,
+                     Date = e.BookingDate
+                 }).Count(s => s.Date.Year == 2022 && s.Date.Month == 1); ;
+            ViewBag.thang02 = db.TicketBookingDetails.Join(db.TicketBookings, p => p.TicketBookingId, e => e.Id,
+                (p, e) => new
+                {
+                    Id = p.TicketBookingId,
+                    Id2 = p.TicketId,
+                    Date = e.BookingDate
+                }).Count(s => s.Date.Year == 2022 && s.Date.Month == 2); ;
+            ViewBag.thang03 = db.TicketBookingDetails.Join(db.TicketBookings, p => p.TicketBookingId, e => e.Id,
+                (p, e) => new
+                {
+                    Id = p.TicketBookingId,
+                    Id2 = p.TicketId,
+                    Date = e.BookingDate
+                }).Count(s => s.Date.Year == 2022 && s.Date.Month == 3); ;
+            ViewBag.thang04 = db.TicketBookingDetails.Join(db.TicketBookings, p => p.TicketBookingId, e => e.Id,
+                (p, e) => new
+                {
+                    Id = p.TicketBookingId,
+                    Id2 = p.TicketId,
+                    Date = e.BookingDate
+                }).Count(s => s.Date.Year == 2022 && s.Date.Month == 4); ;
+            ViewBag.thang05 = db.TicketBookingDetails.Join(db.TicketBookings, p => p.TicketBookingId, e => e.Id,
+                (p, e) => new
+                {
+                    Id = p.TicketBookingId,
+                    Id2 = p.TicketId,
+                    Date = e.BookingDate
+                }).Count(s => s.Date.Year == 2022 && s.Date.Month == 5); ;
+            ViewBag.thang06 = db.TicketBookingDetails.Join(db.TicketBookings, p => p.TicketBookingId, e => e.Id,
+                (p, e) => new
+                {
+                    Id = p.TicketBookingId,
+                    Id2 = p.TicketId,
+                    Date = e.BookingDate
+                }).Count(s => s.Date.Year == 2022 && s.Date.Month == 6); ;
+            ViewBag.thang07 = db.TicketBookingDetails.Join(db.TicketBookings, p => p.TicketBookingId, e => e.Id,
+                (p, e) => new
+                {
+                    Id = p.TicketBookingId,
+                    Id2 = p.TicketId,
+                    Date = e.BookingDate
+                }).Count(s => s.Date.Year == 2022 && s.Date.Month == 7); ;
+            ViewBag.thang08 = db.TicketBookingDetails.Join(db.TicketBookings, p => p.TicketBookingId, e => e.Id,
+                (p, e) => new
+                {
+                    Id = p.TicketBookingId,
+                    Id2 = p.TicketId,
+                    Date = e.BookingDate
+                }).Count(s => s.Date.Year == 2022 && s.Date.Month == 8); ;
+            ViewBag.thang09 = db.TicketBookingDetails.Join(db.TicketBookings, p => p.TicketBookingId, e => e.Id,
+                (p, e) => new
+                {
+                    Id = p.TicketBookingId,
+                    Id2 = p.TicketId,
+                    Date = e.BookingDate
+                }).Count(s => s.Date.Year == 2022 && s.Date.Month == 9); ;
+            ViewBag.thang10 = db.TicketBookingDetails.Join(db.TicketBookings, p => p.TicketBookingId, e => e.Id,
+                (p, e) => new
+                {
+                    Id = p.TicketBookingId,
+                    Id2 = p.TicketId,
+                    Date = e.BookingDate
+                }).Count(s => s.Date.Year == 2022 && s.Date.Month == 10); ;
+            ViewBag.thang11 = db.TicketBookingDetails.Join(db.TicketBookings, p => p.TicketBookingId, e => e.Id,
+                (p, e) => new
+                {
+                    Id = p.TicketBookingId,
+                    Id2 = p.TicketId,
+                    Date = e.BookingDate
+                }).Count(s => s.Date.Year == 2022 && s.Date.Month == 11); ;
+            ViewBag.thang12 = db.TicketBookingDetails.Join(db.TicketBookings, p => p.TicketBookingId, e => e.Id,
+                (p, e) => new
+                {
+                    Id = p.TicketBookingId,
+                    Id2 = p.TicketId,
+                    Date = e.BookingDate
+                }).Count(s => s.Date.Year == 2022 && s.Date.Month == 12); ;
             return View();
         }
 

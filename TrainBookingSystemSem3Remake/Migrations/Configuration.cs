@@ -118,6 +118,169 @@
             };
             roles.ForEach(s => trainContext.Roles.Add(s));
             trainContext.SaveChanges();
+
+            var trips = new List<Trip>
+            {
+                new Trip() {Id = 1, EndDateTime = DateTime.Now, FromStationId = 2, ToStationId = 1, TrainId = 1, StartDateTime = DateTime.Now, Status = 1},
+            };
+            trips.ForEach(s => trainContext.Trips.Add(s));
+            trainContext.SaveChanges();
+
+            var tickets = new List<Ticket>
+            {
+                new Ticket() {Id = 1, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 2, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 3, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 4, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 5, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 6, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 7, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 8, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 9, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 10, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 11, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 12, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 13, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 14, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 15, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 16, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 17, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 18, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 19, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 20, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+                new Ticket() {Id = 21, TripId = 1, BookingDate = DateTime.Now, Row = 1, Colunm = 1, Price = 1000, Status = 1, TrainCarriagesId = 1, },
+            };
+            tickets.ForEach(s => trainContext.Tickets.Add(s));
+            trainContext.SaveChanges();
+
+            var userList = new List<IdentityUser>
+            {
+                new IdentityUser {Id = "1", UserName = "HiHi", Email = "hihi@gmail.com"},
+                new IdentityUser {Id = "2", UserName = "HiHiHEHE", Email = "hehi@gmail.com"}
+            };
+            userList.ForEach(s => trainContext.Users.Add(s));
+            trainContext.SaveChanges();
+
+            var bookingTicketList = new List<TicketBooking>
+            {
+                new TicketBooking(){Id = 1, BookingDate = Convert.ToDateTime("01-01-2022"), TotalPrice = 1000, IdentityUserId = "1"},
+                //new TicketBooking(){Id = 2, BookingDate = Convert.ToDateTime("02-02-2022"), TotalPrice = 1000, IdentityUserId = "1"},
+                //new TicketBooking(){Id = 3, BookingDate = Convert.ToDateTime("03-03-2022"), TotalPrice = 1000, IdentityUserId = "1"},
+                //new TicketBooking(){Id = 4, BookingDate = Convert.ToDateTime("04-04-2022"), TotalPrice = 1000, IdentityUserId = "1"},
+                //new TicketBooking(){Id = 5, BookingDate = Convert.ToDateTime("05-05-2022"), TotalPrice = 1000, IdentityUserId = "1"},
+                //new TicketBooking(){Id = 6, BookingDate = Convert.ToDateTime("06-06-2022"), TotalPrice = 1000, IdentityUserId = "1"},
+                //new TicketBooking(){Id = 7, BookingDate = Convert.ToDateTime("07-07-2022"), TotalPrice = 1000, IdentityUserId = "1"},
+                //new TicketBooking(){Id = 8, BookingDate = Convert.ToDateTime("08-08-2022"), TotalPrice = 1000, IdentityUserId = "1"},
+                //new TicketBooking(){Id = 9, BookingDate = Convert.ToDateTime("09-09-2022"), TotalPrice = 1000, IdentityUserId = "1"},
+                //new TicketBooking(){Id = 10, BookingDate = Convert.ToDateTime("10-10-2022"), TotalPrice = 1000, IdentityUserId = "1"},
+                //new TicketBooking(){Id = 11, BookingDate = Convert.ToDateTime("11-11-2022"), TotalPrice = 1000, IdentityUserId = "1"},
+                //new TicketBooking(){Id = 12, BookingDate = Convert.ToDateTime("12-12-2022"), TotalPrice = 1000, IdentityUserId = "1"},
+
+            };
+            bookingTicketList.ForEach(s => trainContext.TicketBookings.Add(s));
+            trainContext.SaveChanges();
+
+            var bookingTicketDetailList = new List<TicketBookingDetail>
+            {
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 1, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 2, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 3, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 4, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 5, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 6, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 7, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 8, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 9, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 10, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 11, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 12, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 13, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 14, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 15, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 16, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 17, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 18, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 19, UnitPrice = 100},
+                new TicketBookingDetail(){TicketBookingId = 1, TicketId = 20, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 1, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 2, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 3, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 4, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 5, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 6, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 7, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 8, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 9, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 10, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 11, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 12, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 13, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 14, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 15, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 16, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 17, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 18, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 19, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 20, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 21, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 22, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 23, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 24, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 25, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 26, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 27, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 28, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 29, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 30, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 2, TicketId = 31, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 18, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 19, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 20, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 21, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 22, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 23, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 24, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 25, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 26, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 27, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 28, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 29, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 30, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 3, TicketId = 31, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 2, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 3, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 4, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 5, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 6, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 7, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 8, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 9, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 10, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 11, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 12, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 13, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 14, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 15, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 16, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 17, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 18, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 19, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 20, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 21, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 22, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 23, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 24, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 25, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 26, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 27, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 28, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 29, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 30, UnitPrice = 100},
+                //new TicketBookingDetail(){TicketBookingId = 4, TicketId = 31, UnitPrice = 100},
+
+            };
+            bookingTicketDetailList.ForEach(s => trainContext.TicketBookingDetails.Add(s));
+            trainContext.SaveChanges();
         }
     }
 }

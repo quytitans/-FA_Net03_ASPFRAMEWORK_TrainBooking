@@ -12,7 +12,9 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <!-- Go to www.addthis.com/dashboard to customize your tools -->
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-6180dd5c61f84693"></script>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap" rel="stylesheet">
     @RenderSection("link", required: false)
 </head>
 <body>
@@ -20,7 +22,7 @@
     <div class="header-nav">
         <div class="grid wide">
             <div class="row header-nav-row">
-                <div class="l-2"><a href="/Client/HomePage"><img src="~/Content/assets_client/img/logo.png" alt=""></a></div>
+                <div class="l-2"><a style="font-size: 30px ;font-family: 'Titan One', cursive" href="/Client/HomePage">Back Way</a></div>
                 @if (Request.IsAuthenticated)
                 {
                     <div class="l-2"></div>
