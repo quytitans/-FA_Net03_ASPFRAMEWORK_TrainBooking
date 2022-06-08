@@ -135,6 +135,59 @@ namespace TrainBookingSystemSem3Remake.Controllers
             }
         }
 
+        public ActionResult DetailUser()
+        {
+            // tìm tất cả user theo Id
+            string idUser = (string) Session["userId"];
+            ViewBag.DetailUser = db.Users.Find(idUser);
+
+            // tìm tất cả vé đặt theo userId
+            var ticketBookings = db.TicketBookings.Where(s => s.IdentityUserId.Contains(idUser)).ToList();
+            var listTicketUser = new List<TicketBookingModel>();
+            foreach (var item in ticketBookings)
+            {
+                var ticketBookingDetails = db.TicketBookingDetails.Where(s => s.TicketBookingId == item.Id).ToList();
+                foreach (var itemBooking in ticketBookingDetails)
+                {
+                    TicketBookingModel ticketBookingModel = new TicketBookingModel()
+                    {
+                        OrderId = item.Id,
+                        BookingDate = item.BookingDate,
+                        UnitPrice = itemBooking.UnitPrice,
+                        TicketId = itemBooking.TicketId,
+                        TrainStationFrom = itemBooking.Ticket.Trip.TrainStationFrom.Name,
+                        TrainStationTo = itemBooking.Ticket.Trip.TrainStationTo.Name,
+                        TrainCarriagesName = itemBooking.Ticket.TrainCarriages.Name,
+                        Booking = converBookingToString(itemBooking.Ticket.Row, itemBooking.Ticket.Colunm)
+                    };
+                    listTicketUser.Add(ticketBookingModel);
+                }
+            }
+
+            return View(listTicketUser);
+        }
+
+        private string converBookingToString(int row, int colunm)
+        {
+            var booking = "";
+            //for (int i = 1; i <= 12; i++)
+            //{
+            //    for
+            //}
+            switch (colunm)
+            {
+                case 1:
+                    return "A-" + row;
+                case 2:
+                    return "B-" + row;
+                case 3:
+                    return "C-" + row;
+                case 4:
+                    return "D-" + row;
+            }
+            return booking;
+        }
+
         public ActionResult Login()
         {
             return View();

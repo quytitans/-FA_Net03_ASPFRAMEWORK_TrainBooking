@@ -15,7 +15,6 @@ namespace TrainBookingSystemSem3Remake.Models
 
         public DateTime BookingDate { get; set; }
         public double TotalPrice { get; set; }
-
         public string IdentityUserId { get; set; }
         [ForeignKey("IdentityUserId")]
         public virtual IdentityUser IdentityUsers { get; set; }

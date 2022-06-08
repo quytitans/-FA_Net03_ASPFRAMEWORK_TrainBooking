@@ -24,7 +24,6 @@
         }
         <div class="line"></div>
     </div>
-    <a href="@Url.Action("ShoppingCart","Client")">Thanh toán</a>
 
     <!-- Tab content -->
     <div class="tab-content">
@@ -36,6 +35,8 @@
                         {
 
                             <div class="grid-container" data-name="@ticketByTrip.TrainCarriagesName" style="display:@(ticketByTrip.TrainCarriagesName == "Toa 1" ? "" : "none")">
+
+
 
                                 @{
                                     var listTicket = ticketByTrip.Tickets;
@@ -57,7 +58,7 @@
                                             switch (j)
                                             {
                                                 case 1:
-                                <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" style="@(ticket.Status == 3 ? "background-color:blue" : "")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> A @i </span>
+                                                    <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" style="@(ticket.Status == 3 ? "background-color:blue" : "")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> A @i </span>
                                                     break;
                                                 case 2:
                                                     <span class="ticketCheck @(ticket.Status == 2 ? "grid-item-booked" : "grid-item")" style="@(ticket.Status == 3 ? "background-color:blue" : "")" data-id="@ticket.Id" data-price="@ticket.Price" data-status="@ticket.Status" data-startDateTime="@ticket.Trip.StartDateTime"> B @i </span>
@@ -80,7 +81,7 @@
                 </div>
             </div>
         </div>
-
+        <img width="600px" src="https://res.cloudinary.com/dark-faith/image/upload/v1654702144/dat%20ve/TrainAnotaion_ltnqu9.png" />
     </div>
 </div>
 
