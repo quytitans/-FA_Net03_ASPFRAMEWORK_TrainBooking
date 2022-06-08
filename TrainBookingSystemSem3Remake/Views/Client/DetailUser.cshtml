@@ -1,0 +1,80 @@
+﻿@model IEnumerable<TrainBookingSystemSem3Remake.Models.ViewModel.TicketBookingModel>
+@{
+    ViewBag.Title = "GetDetailTrip";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+@{
+    var totalPrice = 0.0;
+}
+@section link
+{
+    <link rel="stylesheet" href="~/Content/assets_client/css/ticket4-12.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.17/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+}
+<style>
+    .btn-danger a {
+        text-decoration: none;
+        color: white;
+    }
+</style>
+<h2>Chi tiết đơn hàng</h2>
+
+@if (ViewBag.DetailUser != null)
+{
+    <div class="col-md-12">
+        <dt>
+            Tên khách: @ViewBag.DetailUser.UserName
+        </dt>
+    </div>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Mã đơn hàng</th>
+            <th scope="col">Mã vé</th>
+            <th scope="col">Giá tiền</th>
+            <th scope="col">Toa</th>
+            <th scope="col">Chỗ ngồi</th>
+            <th scope="col">Nơi đến</th>
+            <th scope="col">Nơi đi</th>
+            <th scope="col">Ngày đặt vé</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Count() != 0)
+        {
+            foreach (var item in Model)
+            {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketId)
+            </td>
+            <td>
+                @item.UnitPrice.ToString("#,##0").Replace(',', ',') VNĐ
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrainCarriagesName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.TrainStationFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrainStationTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookingDate)
+            </td>
+        </tr>
+            }
+        }
+    </tbody>
+</table>
